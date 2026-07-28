@@ -1,0 +1,58 @@
+# ─── Environment ──────────────────────────────────────────────────────────
+.env
+.env.local
+.env.production
+.env.development
+
+# ─── Backend (Java / Maven) ─────────────────────────────────────────────────
+backend/target/
+backend/*.class
+backend/*.jar
+backend/*.war
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/.idea/
+backend/*.iml
+backend/out/
+backend/logs/
+backend/data/
+
+# ─── Frontend (React / Node) ────────────────────────────────────────────────
+frontend/node_modules/
+frontend/build/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+frontend/.env.development
+frontend/dist/
+frontend/*.log
+frontend/npm-debug.log*
+
+# ─── IDE ────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ─── Logs ───────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ─── OS ─────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ─── Testing ────────────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ─── Docker ─────────────────────────────────────────────────────────────────
+docker-compose.override.yml

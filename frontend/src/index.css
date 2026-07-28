@@ -1,0 +1,173 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer base {
+  * {
+    @apply border-edu-border;
+  }
+
+  body {
+    @apply bg-edu-secondary font-sans text-edu-text-primary antialiased;
+  }
+
+  :root {
+    --color-edu-primary: #4f46e5;
+    --color-edu-accent: #10b981;
+    --color-edu-danger: #ef4444;
+    --color-edu-warning: #f59e0b;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-edu-border bg-white p-6 shadow-card transition-all duration-200;
+  }
+
+  .card-hover {
+    @apply card cursor-pointer hover:shadow-card-hover hover:border-edu-primary/20;
+  }
+
+  .card-stats {
+    @apply card relative overflow-hidden;
+  }
+
+  .card-stats::before {
+    content: "";
+    @apply absolute left-0 top-0 h-1 w-full;
+  }
+
+  .card-stats.indigo::before {
+    @apply bg-edu-primary;
+  }
+
+  .card-stats.vert::before {
+    @apply bg-edu-accent;
+  }
+
+  .card-stats.rouge::before {
+    @apply bg-edu-danger;
+  }
+
+  .card-stats.warning::before {
+    @apply bg-edu-warning;
+  }
+
+  .input-field {
+    @apply block w-full rounded-xl border border-edu-border bg-white px-4 py-2.5 text-sm text-edu-text-primary placeholder-edu-muted transition-all duration-200 focus:border-edu-primary focus:outline-none focus:ring-2 focus:ring-edu-primary/20;
+  }
+
+  .input-error {
+    @apply border-rouge-500 focus:border-rouge-500 focus:ring-rouge-500/20;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-edu-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-edu-primary-dark focus:outline-none focus:ring-2 focus:ring-edu-primary/30 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply btn-primary bg-white text-edu-text-primary ring-1 ring-inset ring-edu-border hover:bg-edu-surface-hover;
+  }
+
+  .btn-danger {
+    @apply btn-primary bg-rouge-500 hover:bg-rouge-600 focus:ring-rouge-500/30;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-edu-text-secondary transition-all duration-200 hover:bg-edu-surface-hover hover:text-edu-text-primary;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3 text-base;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  .badge-indigo {
+    @apply badge bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-600/10;
+  }
+
+  .badge-vert {
+    @apply badge bg-vert-50 text-vert-700 ring-1 ring-inset ring-vert-600/10;
+  }
+
+  .badge-rouge {
+    @apply badge bg-rouge-50 text-rouge-700 ring-1 ring-inset ring-rouge-600/10;
+  }
+
+  .badge-warning {
+    @apply badge bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/10;
+  }
+
+  .badge-muted {
+    @apply badge bg-gray-50 text-gray-600 ring-1 ring-inset ring-gray-500/10;
+  }
+
+  .sidebar-link {
+    @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-edu-text-secondary transition-all duration-200 hover:bg-edu-primary/5 hover:text-edu-primary;
+  }
+
+  .sidebar-link-active {
+    @apply sidebar-link bg-edu-primary/10 text-edu-primary font-semibold;
+  }
+
+  .table-header {
+    @apply bg-edu-surface-hover text-left text-xs font-semibold uppercase tracking-wider text-edu-text-secondary;
+  }
+
+  .table-cell {
+    @apply whitespace-nowrap px-6 py-4 text-sm text-edu-text-primary;
+  }
+
+  .page-title {
+    @apply text-2xl font-bold tracking-tight text-edu-text-primary;
+  }
+
+  .page-subtitle {
+    @apply text-sm text-edu-text-secondary;
+  }
+
+  .section-title {
+    @apply text-lg font-semibold text-edu-text-primary;
+  }
+
+  .divider {
+    @apply border-t border-edu-border;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-edu-muted-light;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-edu-muted;
+}
+
+/* Framer motion overrides */
+.motion-safe\:animate-fade-in {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: fadeIn 0.2s ease-out;
+  }
+}

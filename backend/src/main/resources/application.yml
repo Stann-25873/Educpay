@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: edupay-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/edupay_saas_db
+    username: postgres
+    password: 12345
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: false
+    ignore-migration-patterns: "*:pending"
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+# Security (placeholders only)
+edupay:
+  jwt:
+    access-token-ttl-seconds: ${EDUPAY_JWT_ACCESS_TTL_SECONDS:900}
+    refresh-token-ttl-seconds: ${EDUPAY_JWT_REFRESH_TTL_SECONDS:2592000}
+    issuer: ${EDUPAY_JWT_ISSUER:edupay}
+    audience: ${EDUPAY_JWT_AUDIENCE:edupay}
+    secret-base64: ${EDUPAY_JWT_SECRET_BASE64:eW91ci0yNTYtYml0LXNlY3JldC1rZXktY2hhbmdlLW1lLWluLXByb2R1Y3Rpb24=}
+
+  cors:
+    allowed-origins: "${EDUPAY_CORS_ALLOWED_ORIGINS:*}"
+
+  security:
+    refresh-cookie-name: ${EDUPAY_REFRESH_COOKIE_NAME:refresh_token}
+    refresh-cookie-same-site: ${EDUPAY_REFRESH_COOKIE_SAMESITE:Strict}
