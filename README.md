@@ -172,3 +172,15 @@ The backend runs on http://localhost:8080 and frontend on http://localhost:3000.
 ## License
 
 Proprietary commercial software.
+
+
+<img width="1909" height="1073" alt="image" src="https://github.com/user-attachments/assets/447efa42-6d6f-41c7-a800-c4de4193f17d" />
+
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/dc66c92e-4b95-4e7e-81e2-39ad6baa942f" />
+
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/97dfc853-1f5d-49c9-b4ac-5398e0019062" />
+
+<img width="1917" height="1070" alt="image" src="https://github.com/user-attachments/assets/5ee6e6bc-76e3-4198-bff0-e11e6290fd3b" />
+
+
+
