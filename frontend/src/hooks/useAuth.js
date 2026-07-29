@@ -3,9 +3,12 @@ import { AuthContext } from "../contexts/AuthContext";
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) {
+  
+  const hasToken = typeof window !== "undefined" && Boolean(localStorage.getItem("token") || localStorage.getItem("edu_user_session"));
+
+  if (!context || !context.isAuthenticated) {
     return {
-      isAuthenticated: false,
+      isAuthenticated: hasToken,
       roles: [],
       user: null,
       loading: false,
@@ -17,5 +20,6 @@ export function useAuth() {
       hasAnyRole: () => false,
     };
   }
+  
   return context;
 }

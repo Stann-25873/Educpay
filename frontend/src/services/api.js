@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080/api";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
 
 let isRefreshing = false;
 let failedQueue = [];
@@ -26,7 +26,12 @@ export const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken");
+    // On vérifie "token", "accessToken" ou la session globale pour être sûr à 100%
+    const token = 
+      localStorage.getItem("token") || 
+      localStorage.getItem("accessToken") || 
+      JSON.parse(localStorage.getItem("edu_user_session") || "{}")?.access_token;
+      
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -61,8 +66,9 @@ api.interceptors.response.use(
           {},
           { withCredentials: true }
         );
-        const { accessToken } = response.data;
+        const accessToken = response.data.accessToken || response.data.access_token;
 
+        localStorage.setItem("token", accessToken);
         localStorage.setItem("accessToken", accessToken);
         processQueue(null, accessToken);
 
@@ -70,8 +76,10 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError, null);
+        localStorage.removeItem("token");
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem("edu_user_session");
         window.location.href = "/login";
         return Promise.reject(refreshError);
       } finally {

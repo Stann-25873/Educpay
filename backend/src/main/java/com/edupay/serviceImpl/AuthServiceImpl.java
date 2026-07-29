@@ -2,8 +2,10 @@ package com.edupay.serviceImpl;
 
 import com.edupay.dto.request.LoginRequest;
 import com.edupay.dto.request.RefreshTokenRequest;
+import com.edupay.dto.request.RegisterRequest;
 import com.edupay.dto.response.AuthResponse;
 import com.edupay.dto.response.UserResponse;
+import com.edupay.entity.Institution;
 import com.edupay.entity.User;
 import com.edupay.mapper.UserMapper;
 import com.edupay.repository.InstitutionRepository;
@@ -50,6 +52,50 @@ public class AuthServiceImpl implements AuthService {
         this.jwtTokenProvider = jwtTokenProvider;
         this.loginAttemptService = loginAttemptService;
         this.userMapper = userMapper;
+    }
+
+@Override
+    @Transactional
+    public AuthResponse register(RegisterRequest request) {
+        String email = request.getEmail().toLowerCase().trim();
+
+        // 1. Check if email is already taken
+        if (userRepository.findByEmail(email).isPresent()) {
+            log.warn("Registration attempt with existing email: {}", email);
+            throw new BadCredentialsException("An account with this email already exists");
+        }
+
+        // 2. Create institution
+        Institution institution = new Institution();
+        institution.setName(request.getInstitutionName());
+        institution.setType("SCHOOL");
+        institution = institutionRepository.save(institution);
+
+        // 3. Create admin user with BCrypt-encoded password
+        User user = new User();
+        user.setInstitution(institution);
+        user.setEmail(email);
+        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        user.setFirstName("Admin");
+        user.setLastName(request.getInstitutionName());
+        user.setIsActive(true);
+        user = userRepository.save(user);
+
+        log.info("New registration: {} (institution: {})", email, institution.getName());
+
+        // 4. Return auth response with auto-login
+        String tenantId = institution.getId().toString();
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", "ADMIN");
+        claims.put("user_id", user.getId().toString());
+        claims.put("institution_id", tenantId);
+
+        String accessToken = jwtTokenProvider.generateAccessToken(email, tenantId, claims);
+        String refreshToken = jwtTokenProvider.generateRefreshToken(email, tenantId, claims);
+
+        UserResponse userResponse = userMapper.toResponse(user);
+
+        return new AuthResponse(accessToken, refreshToken, 900L, userResponse);
     }
 
     @Override

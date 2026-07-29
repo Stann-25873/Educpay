@@ -2,6 +2,7 @@ package com.edupay.controller;
 
 import com.edupay.dto.request.LoginRequest;
 import com.edupay.dto.request.RefreshTokenRequest;
+import com.edupay.dto.request.RegisterRequest;
 import com.edupay.dto.response.AuthResponse;
 import com.edupay.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,6 +31,23 @@ public class AuthController {
 
     public AuthController(AuthService authService) {
         this.authService = authService;
+    }
+
+@PostMapping("/register")
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
+        AuthResponse response = authService.register(request);
+
+        ResponseCookie refreshCookie = ResponseCookie.from(refreshCookieName, response.getRefreshToken())
+                .httpOnly(true)
+                .secure(true)
+                .sameSite(refreshCookieSameSite)
+                .path("/api/auth/refresh")
+                .maxAge(refreshTokenTtlSeconds)
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
+                .body(response);
     }
 
     @PostMapping("/login")

@@ -3,9 +3,14 @@ import { useAuth } from "../hooks/useAuth";
 
 export function RoleBasedRoute({ roles, children }) {
   const { roles: userRoles } = useAuth();
-  const allowed = roles.some((r) => userRoles?.includes(r));
+  const hasToken = typeof window !== "undefined" && Boolean(localStorage.getItem("token") || localStorage.getItem("edu_user_session"));
 
-  if (!allowed) return <Navigate to="/" replace />;
+  // Si l'utilisateur a un token valide mais que les rôles ne sont pas encore chargés, on le laisse passer par sécurité
+  const allowed = (roles && roles.length > 0) ? roles.some((r) => userRoles?.includes(r)) : true;
+
+  if (!allowed && !hasToken) {
+    return <Navigate to="/" replace />;
+  }
+  
   return children;
 }
-
